@@ -9,41 +9,44 @@ const { Column } = Table;
 
 
 class ChangeDocumentName extends React.Component {
-  state = {
-    value: this.props.anchor.props.children,
-    editable: false,
-  }
-  handleChange = (e) => {
-    this.setState({ value: e.target.value })
-  }
-  check = () => {
-    var newTitle = this.state.value
-    var invalidSpecialCharacter = /[^\w|\-|&|.|(|)|:|[|\]|@|<|>]/gm
-    if (newTitle == undefined || newTitle == '') {
-      notification['warning']({
-        message: 'Document title cannot be empty',
-        duration: 1.8,
-      })
-      return false
+  constructor(props){
+    super(props)
+    this.state = {
+      value: this.props.anchor.props.children,
+      editable: false,
     }
-    if(newTitle.match(invalidSpecialCharacter)!=null){
-      notification['warning']({
-        message: 'The document name contains invalid character',
-        description: 'The special characters you can include in your document name are "-|&_.():[]@<>"',
-        duration: 6,
-      })
-      return false
+    this.handleChange = (e) => {
+      this.setState({ value: e.target.value })
     }
-    this.setState({ editable: false })
-    var data = new FormData()
-    data.append('new_title', newTitle)
-    data.append('csrfmiddlewaretoken', getCookie('csrftoken'))
-    axios.post(this.props.coterieDocument.renameUrl, data).then((response) => {
-      this.props.onChange(this.state.value)
-    })
-  }
-  edit = () => {
-    this.setState({ editable: true })
+    this.check = () => {
+      var newTitle = this.state.value
+      var invalidSpecialCharacter = /[^\w|\-|&|.|(|)|:|[|\]|@|<|>]/gm
+      if (newTitle == undefined || newTitle == '') {
+        notification['warning']({
+          message: 'Document title cannot be empty',
+          duration: 1.8,
+        })
+        return false
+      }
+      if(newTitle.match(invalidSpecialCharacter)!=null){
+        notification['warning']({
+          message: 'The document name contains invalid character',
+          description: 'The special characters you can include in your document name are "-|&_.():[]@<>"',
+          duration: 6,
+        })
+        return false
+      }
+      this.setState({ editable: false })
+      var data = new FormData()
+      data.append('new_title', newTitle)
+      data.append('csrfmiddlewaretoken', getCookie('csrftoken'))
+      axios.post(this.props.coterieDocument.renameUrl, data).then((response) => {
+        this.props.onChange(this.state.value)
+      })
+    }
+    this.edit = () => {
+      this.setState({ editable: true })
+    }
   }
   render() {
     var { value, editable } = this.state;
