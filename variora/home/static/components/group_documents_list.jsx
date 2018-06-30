@@ -1,4 +1,4 @@
-import { Icon, Input, Popconfirm, Table, message } from 'antd';
+import { Icon, Input, Popconfirm, Table, message, notification } from 'antd';
 import { formatOpenCoterieDocumentUrl, getCookie, getUrlFormat } from 'util.js'
 
 import React from 'react';
@@ -17,11 +17,27 @@ class ChangeDocumentName extends React.Component {
     this.setState({ value: e.target.value })
   }
   check = () => {
+    var newTitle = this.state.value
+    var invalidSpecialCharacter = /[^\w|\-|&|.|(|)|:|[|\]|@|<|>]/gm
+    if (newTitle == undefined || newTitle == '') {
+      notification['warning']({
+        message: 'Document title cannot be empty',
+        duration: 1.8,
+      })
+      return false
+    }
+    if(newTitle.match(invalidSpecialCharacter)!=null){
+      notification['warning']({
+        message: 'The document name contains invalid character',
+        description: 'The special characters you can include in your document name are "-|&_.():[]@<>"',
+        duration: 6,
+      })
+      return false
+    }
     this.setState({ editable: false })
     var data = new FormData()
-    data.append('new_title', this.state.value)
+    data.append('new_title', newTitle)
     data.append('csrfmiddlewaretoken', getCookie('csrftoken'))
-    console.log(this.props)
     axios.post(this.props.coterieDocument.renameUrl, data).then((response) => {
       this.props.onChange(this.state.value)
     })
@@ -122,10 +138,12 @@ class GroupDocumentsList extends React.Component {
     const columns = [{
         title: '#',
         dataIndex: 'id',
+        width: '20%',
         render: (text, record) => this.state.data.indexOf(record) + 1
       }, {
         title: 'Title',
         dataIndex: 'title',
+        width: '40%',
         render: (text, coterieDocument) => (
           this.props.isAdmin ? changeDocumentName(text, coterieDocument) :
                               <a href={formatOpenCoterieDocumentUrl(coterieDocument, this.state.coteriePk)}>{text}</a>
@@ -133,6 +151,7 @@ class GroupDocumentsList extends React.Component {
       }, {
       title: 'Action',
       key: 'action',
+      width: '40%',
       render: (text, record) => (
         <span>
           <Popconfirm

@@ -1,22 +1,22 @@
-import 'regenerator-runtime/runtime';
+import 'regenerator-runtime/runtime'
 
-import { Button, Col, Icon, Input, Layout, Menu, Modal, Row, Upload, notification } from 'antd';
+import { Button, Col, Icon, Input, Layout, Menu, Modal, Row, Upload, notification } from 'antd'
 import { Link, Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { getCookie, getUrlFormat } from 'util.js'
 
 import { CollectedDocumentsList } from './collected_documents_list.jsx'
-import React from 'react';
+import React from 'react'
 import { UploadedDocumentsList } from './uploaded_documents_list.jsx'
 import axios from 'axios'
 
-const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
-const MenuItemGroup = Menu.ItemGroup;
+const { SubMenu } = Menu
+const { Header, Content, Sider } = Layout
+const MenuItemGroup = Menu.ItemGroup
 
 
 class DocumentTab extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {}
   }
 
@@ -42,13 +42,13 @@ class DocumentTab extends React.Component {
           <Route exact path="/collected" component={CollectedDocuments}/>
         </Switch>
       </Content>
-    );
+    )
   }
 }
 
 class UploadedDocuments extends React.Component {
   constructor() {
-    super();
+    super()
     this.state = {
       uploadedDocumentFileList: [],
       uploadedDocumentName: '',
@@ -58,11 +58,20 @@ class UploadedDocuments extends React.Component {
     this.uploadedDocumentTable = undefined
     this.uploadLocalDocument = () => {
       var title = this.state.uploadedDocumentName
+      var invalidSpecialCharacter = /[^\w|\-|&|.|(|)|:|[|\]|@|<|>]/gm;
       if (title == undefined || title == '') {
         notification['warning']({
           message: 'Document title cannot be empty',
           duration: 1.8,
-        });
+        })
+        return false
+      }
+      if (title.match(invalidSpecialCharacter) != null) {
+        notification['warning']({
+          message: 'The document name contains invalid character',
+          description: 'The special characters you can include in your document name are "-|&_.():[]@<>"',
+          duration: 6,
+        })
         return false
       }
       var data = new FormData()
@@ -74,14 +83,19 @@ class UploadedDocuments extends React.Component {
           'Content-Type': 'multipart/form-data'
         }
       }).then(() => {
-        this.setState({ uploadedDocumentFileList: [] })
-        this.setState({ uploadedDocumentName: '' })
+        this.setState({
+          uploadedDocumentFileList: []
+        })
+        this.setState({
+          uploadedDocumentName: ''
+        })
         this.uploadedDocumentTable.updateData()
       })
     }
     this.uploadOnlineDocument = () => {
       var title = this.state.onlineDocumentName
       var externalUrl = this.state.onlineDocumentUrl
+      var invalidSpecialCharacter = /[^\w|\-|&|.|(|)|:|[|\]|@|<|>]/gm;
       if (title == undefined || title == '') {
         notification['warning']({
           message: 'Document title cannot be empty',
@@ -96,6 +110,14 @@ class UploadedDocuments extends React.Component {
         })
         return false
       }
+      if(title.match(invalidSpecialCharacter)!=null){
+        notification['warning']({
+          message: 'The document name contains invalid character',
+          description: 'The special characters you can include in your document name are "-|&_.():[]@<>"',
+          duration: 6,
+        })
+        return false
+      }
       var data = new FormData()
       data.append('title', title)
       data.append('external_url', externalUrl)
@@ -107,13 +129,25 @@ class UploadedDocuments extends React.Component {
           this.uploadedDocumentTable.updateData()
         })
     }
+    this.handleDefaultDocumentName = this.handleDefaultDocumentName.bind(this)
+    this.handleUserInputDocumentName = this.handleUserInputDocumentName.bind(this)
   }
+
+  handleDefaultDocumentName(event) {
+    var defaultDocumentName = this.state.uploadedDocumentFileList[0] ? this.state.uploadedDocumentFileList[0].name : 'undefined'
+    this.setState({ uploadedDocumentName: defaultDocumentName })
+  }
+  handleUserInputDocumentName(event) {
+    this.setState({ uploadedDocumentName: event.target.value })
+  }
+
+
   render() {
-    var self = this;
+    var self = this
     var uploadProps = {
       accept: 'application/pdf',
       showUploadList: true,
-      beforeUpload(file, fileList) { self.setState({ uploadedDocumentFileList: [file] }); return false },
+      beforeUpload(file, fileList) { self.setState({ uploadedDocumentFileList: [file], uploadedDocumentName: file.name}); return false },
       fileList: this.state.uploadedDocumentFileList,
     }
     return (
@@ -131,9 +165,10 @@ class UploadedDocuments extends React.Component {
               </Upload>
               <Input
                 style={{ width: '60%', margin: 8 }}
-                onChange={async (e) => this.setState({ uploadedDocumentName: e.target.value })}
                 value={this.state.uploadedDocumentName}
-                placeholder={ 'Give a title to this document' }
+                onChange={this.handleDefaultDocumentName}
+                onChange={this.handleUserInputDocumentName}
+                placeholder={'Give a title to this document'}
               ></Input>
               <div>
                 <Button type="primary" icon="upload" style={{ margin: 8 }} onClick={this.uploadLocalDocument}>upload</Button>
@@ -167,7 +202,7 @@ class UploadedDocuments extends React.Component {
 
 class CollectedDocuments extends React.Component {
   constructor() {
-    super();
+    super()
   }
   render() {
     return (
@@ -180,22 +215,4 @@ class CollectedDocuments extends React.Component {
   }
 }
 
-export { DocumentTab };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export { DocumentTab }
