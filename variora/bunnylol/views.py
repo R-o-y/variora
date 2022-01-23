@@ -13,7 +13,7 @@ def handle_bunnylol_command(request):
 
     query = request.GET['q']
     shortcut = query.split(' ')[0]
-    params = tuple(query.split(' ')[1].split(',')) if len(query.split(' ')) > 1 else ()
+    params = tuple(query.split(' ', 1)[1].split(',')) if len(query.split(' ')) > 1 else ()
 
     try:
         bunnylol_command = BunnylolCommand.objects.get(shortcut=shortcut)
