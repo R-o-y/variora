@@ -7,11 +7,11 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from notifications.signals import notify
 
-from api.encoders import (CoterieAnnotationEncoder,
+from .api.encoders import (CoterieAnnotationEncoder,
                           CoterieAnnotationReplyEncoder)
 from variora import utils
 from variora.utils import should_return_pwa
-from views_coterie import *
+from .views_coterie import *
 
 from .models import Coterie, CoterieDocument
 

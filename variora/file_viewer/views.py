@@ -10,9 +10,9 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from notifications.signals import notify
 
-from api.encoders import AnnotationEncoder, AnnotationReplyEncoder
-from models import Annotation, AnnotationReply, Comment, Document
-from utils import sanitize
+from .api.encoders import AnnotationEncoder, AnnotationReplyEncoder
+from .models import Annotation, AnnotationReply, Comment, Document
+from .utils import sanitize
 from variora import utils
 from variora.utils import *
 

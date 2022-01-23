@@ -3,7 +3,7 @@ from django.contrib.sessions.models import Session
 from .admin_notifications import *
 from .admin_django_auth import *
 
-import models
+from . import models
 
 
 class UserModelAdmin(admin.ModelAdmin):

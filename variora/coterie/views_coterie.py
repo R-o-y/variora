@@ -4,7 +4,7 @@ import html2text
 from django.http import HttpResponse
 from django.shortcuts import redirect
 
-import models
+from . import models
 from home.models import User
 
 from .models import Coterie

@@ -66,7 +66,7 @@ module.exports = {
         test: /.jsx?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
-        query: {
+        options: {
           presets: ['babel-preset-env', 'react', 'stage-2'],
           plugins: [
             'transform-regenerator', [
@@ -79,7 +79,10 @@ module.exports = {
         }
       }, {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader'},
+        ]
       }, {
         test: /\.less$/,
         use: [

@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.contrib.sitemaps import Sitemap
 from django.contrib.sitemaps.views import sitemap
 
-import proxy_views
+from . import proxy_views
 from file_viewer.models import Document
 from home.api import views_notifications, views_web_push
 
@@ -72,6 +72,9 @@ urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     # app: web_push
     url(r'^devices/delete', views_web_push.delete_device),
     url(r'^devices?$', FCMDeviceAuthorizedViewSet.as_view({'post': 'create'})),
+
+    # app: bunnylol
+    url(r'^bunnylol/', include('bunnylol.urls')),
 
     # MUST BE THE LAST ONE
     url(r'^', include('home.urls')),

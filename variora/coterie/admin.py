@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import (Coterie, CoterieJoinCode, CoterieAnnotation, CoterieAnnotationReply,
+from .models import (Coterie, CoterieJoinCode, CoterieAnnotation, CoterieAnnotationReply,
                     CoterieApplication, CoterieComment, CoterieDocument,
                     CoterieInvitation, CoterieReadlist, InvitationCode,
                     NonRegisteredUserTempCoterieInvitation)

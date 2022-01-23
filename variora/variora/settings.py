@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 
 import os
 
-from private_settings import *
-from private_settings import DATABASES, DEBUG, SECRET_KEY
+from .private_settings import *
+from .private_settings import DATABASES, DEBUG, SECRET_KEY
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'file_viewer',
     'user_dashboard',
     'coterie',
+    'bunnylol'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -156,7 +157,7 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'home.User'
 ANONYMOUS_USER_PORTRAIT_URL = '/media/portrait/anonymous_portrait.png'
 
-FILE_UPLOAD_PERMISSIONS = 0664
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 
 ############ cron job related ##############
