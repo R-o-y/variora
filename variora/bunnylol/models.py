@@ -10,3 +10,5 @@ class BunnylolCommand(ModelWithCleanUUID):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     shortcut = models.CharField(max_length=64, null=False, blank=False)
     action = models.TextField(null=False, blank=False, help_text="sth like http://example.com?a=%s&b=%s")
+    description = models.TextField(null=False, blank=True)
+
