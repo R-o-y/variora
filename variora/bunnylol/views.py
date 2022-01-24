@@ -1,5 +1,4 @@
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .models import BunnylolCommand
@@ -18,5 +17,5 @@ def handle_bunnylol_command(request):
     try:
         bunnylol_command = BunnylolCommand.objects.get(shortcut=shortcut)
         return redirect(bunnylol_command.action % params)
-    except ObjectDoesNotExist:
+    except Exception:
         return redirect('https://www.google.com/search?q={q}'.format(q=query))
