@@ -4,7 +4,7 @@ from .models import BunnylolCommand
 
 
 class BunnylolCommandModelAdmin(admin.ModelAdmin):
-    list_display = ["clean_uuid", "shortcut", "action"]
+    list_display = ["clean_uuid", "shortcut", "action", "description"]
     list_filter = []
     search_fields = ["uuid", "shortcut", "action"]
 
