@@ -42,7 +42,7 @@
     "less": "^2.7.3",
     "less-loader": "^5.0.0",
     "less-vars-to-js": "^1.2.1",
-    "moment-timezone": "^0.5.25",
+    "moment-timezone": "^0.5.35",
     "msal": "^0.1.7",
     "rc-queue-anim": "^1.4.0",
     "rc-scroll-anim": "^2.1.0",
